@@ -1,0 +1,42 @@
+---
+import { t } from '../lib/i18n';
+
+const { lang } = Astro.props;
+const $t = (key: string) => t(lang, key);
+const arrow = lang === 'fa' ? '←' : '→';
+
+const items = [
+  { title: $t('quickStart.core'), desc: $t('quickStart.coreDesc'), code: 'go get github.com/kamune-org/kamune' },
+  { title: $t('quickStart.relay'), desc: $t('quickStart.relayDesc'), code: 'go install github.com/kamune-org/kamune/cmd/relay@latest && relay -config relay.toml' },
+  { title: $t('quickStart.bus'), desc: $t('quickStart.busDesc'), code: null, link: 'https://github.com/kamune-org/kamune/releases', linkLabel: $t('quickStart.download') },
+  { title: $t('quickStart.tui'), desc: $t('quickStart.tuiDesc'), code: 'go install github.com/kamune-org/kamune/cmd/tui@latest' },
+  { title: $t('quickStart.daemon'), desc: $t('quickStart.daemonDesc'), code: 'go install github.com/kamune-org/kamune/cmd/daemon@latest' },
+];
+---
+
+<section id="quick-start" class="py-20 px-4 bg-bg-surface">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="section-title">{$t('quickStart.title')}</h2>
+    <p class="section-subtitle">{$t('quickStart.subtitle')}</p>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {items.map((item) => (
+        <div class="card">
+          <h3 class="font-semibold mb-1">{item.title}</h3>
+          <p class="text-sm text-text-muted mb-4">{item.desc}</p>
+          {item.code ? (
+            <div class="code-block text-xs">{item.code}</div>
+          ) : (
+            <a
+              href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-block text-sm font-medium text-accent hover:text-accent-hover transition-colors"
+            >
+              {item.linkLabel} {arrow}
+            </a>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

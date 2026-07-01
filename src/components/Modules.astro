@@ -1,0 +1,33 @@
+---
+import { t } from '../lib/i18n';
+
+const { lang } = Astro.props;
+const $t = (key: string) => t(lang, key);
+
+const modules = [
+  { title: $t('modules.core.title'), desc: $t('modules.core.desc'), status: $t('modules.core.status'), icon: '📦' },
+  { title: $t('modules.bus.title'), desc: $t('modules.bus.desc'), status: $t('modules.bus.status'), icon: '🖥️' },
+  { title: $t('modules.relay.title'), desc: $t('modules.relay.desc'), status: $t('modules.relay.status'), icon: '🔀' },
+  { title: $t('modules.tui.title'), desc: $t('modules.tui.desc'), status: $t('modules.tui.status'), icon: '💬' },
+  { title: $t('modules.daemon.title'), desc: $t('modules.daemon.desc'), status: $t('modules.daemon.status'), icon: '⚙️' },
+];
+---
+
+<section id="modules" class="py-20 px-4 bg-bg-surface">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="section-title">{$t('modules.title')}</h2>
+    <p class="section-subtitle">{$t('modules.subtitle')}</p>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {modules.map((m) => (
+        <div class="card group flex flex-col">
+          <div class="flex items-start justify-between mb-4">
+            <span class="text-3xl">{m.icon}</span>
+            <span class="badge-success text-[10px]">{m.status}</span>
+          </div>
+          <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">{m.title}</h3>
+          <p class="text-sm text-text-muted leading-relaxed flex-1">{m.desc}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,45 @@
+---
+const { src = '/demo.gif', alt = 'Kamune demo' } = Astro.props;
+const id = 'gif-' + Math.random().toString(36).slice(2, 8);
+---
+
+<div class="relative group cursor-pointer" data-gif-player>
+  <img {src} {alt} class="w-full rounded-xl border border-border" data-gif-img />
+  <button
+    class="absolute inset-0 flex items-center justify-center
+           bg-bg/20 opacity-0 group-hover:opacity-100
+           transition-opacity"
+    data-gif-toggle
+    type="button"
+    aria-label="Toggle play/pause"
+  >
+    <span class="text-5xl bg-bg/80 rounded-full w-16 h-16 flex items-center justify-center border border-border text-text-muted hover:text-text-primary hover:border-accent/30 transition-colors" data-gif-icon>⏸</span>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll('[data-gif-player]').forEach((player) => {
+    const img = player.querySelector('[data-gif-img]') as HTMLImageElement;
+    const btn = player.querySelector('[data-gif-toggle]') as HTMLButtonElement;
+    const icon = player.querySelector('[data-gif-icon]');
+    let playing = true;
+
+    btn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!img) return;
+
+      if (playing) {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        canvas.getContext('2d')?.drawImage(img, 0, 0);
+        img.src = canvas.toDataURL();
+        if (icon) icon.textContent = '▶';
+      } else {
+        img.src = '/demo.gif?' + Date.now();
+        if (icon) icon.textContent = '⏸';
+      }
+      playing = !playing;
+    });
+  });
+</script>

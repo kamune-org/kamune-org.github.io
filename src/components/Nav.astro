@@ -1,0 +1,43 @@
+---
+import { t } from '../lib/i18n';
+
+const { lang } = Astro.props;
+const $t = (key: string) => t(lang, key);
+const base = lang === 'en' ? '/en' : '/fa';
+const otherLang = lang === 'en' ? 'fa' : 'en';
+const otherLabel = lang === 'en' ? 'فارسی' : 'English';
+const otherBase = lang === 'en' ? '/fa' : '/en';
+---
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border">
+  <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+    <a href={base} class="flex items-center gap-2 text-text-primary font-semibold">
+      <img src="/logo.png" alt="Kamune" class="h-7 w-7" />
+      <span>Kamune</span>
+    </a>
+
+    <div class="hidden md:flex items-center gap-6 text-sm text-text-muted">
+      <a href={`${base}#features`} class="hover:text-text-primary transition-colors">{$t('nav.features')}</a>
+      <a href={`${base}#how-it-works`} class="hover:text-text-primary transition-colors">{$t('nav.howItWorks')}</a>
+      <a href={`${base}#modules`} class="hover:text-text-primary transition-colors">{$t('nav.modules')}</a>
+      <a href={`${base}#security`} class="hover:text-text-primary transition-colors">{$t('nav.security')}</a>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <a
+        href={otherBase}
+        class="text-xs font-medium px-2 py-1 rounded border border-border text-text-muted hover:text-text-primary hover:border-accent/30 transition-colors"
+      >
+        {otherLabel}
+      </a>
+      <a
+        href="https://github.com/kamune-org/kamune"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-sm font-medium px-3 py-1.5 rounded-lg bg-accent text-white hover:bg-accent-hover transition-colors"
+      >
+        {$t('nav.github')}
+      </a>
+    </div>
+  </div>
+</nav>

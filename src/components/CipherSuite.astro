@@ -1,0 +1,44 @@
+---
+import { t } from '../lib/i18n';
+
+const { lang } = Astro.props;
+const $t = (key: string) => t(lang, key);
+
+const layers = [
+  { label: $t('cipher.identity'), algo: $t('cipher.identityAlgo'), desc: $t('cipher.identityDesc'), color: 'text-accent' },
+  { label: $t('cipher.keyExchange'), algo: $t('cipher.keyExchangeAlgo'), desc: $t('cipher.keyExchangeDesc'), color: 'text-success' },
+  { label: $t('cipher.kdf'), algo: $t('cipher.kdfAlgo'), desc: $t('cipher.kdfDesc'), color: 'text-warning' },
+  { label: $t('cipher.encryption'), algo: $t('cipher.encryptionAlgo'), desc: $t('cipher.encryptionDesc'), color: 'text-info' },
+];
+---
+
+<section class="py-20 px-4 bg-bg-surface">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="section-title">{$t('cipher.title')}</h2>
+    <p class="section-subtitle">{$t('cipher.subtitle')}</p>
+
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div class="flex justify-center">
+        <img src="/diagrams/cipher-suite.svg" alt="Cipher suite architecture" class="max-w-full h-auto" />
+      </div>
+
+      <div class="space-y-4">
+        <div class="code-block text-center mb-6 text-accent font-semibold">
+          {$t('cipher.suiteName')}
+        </div>
+        {layers.map((l) => (
+          <div class="card flex items-start gap-4">
+            <div class={`text-2xl font-mono font-bold ${l.color} mt-1`}>→</div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="font-semibold">{l.label}</span>
+                <span class="text-xs font-mono text-text-muted bg-bg-surface px-2 py-0.5 rounded">{l.algo}</span>
+              </div>
+              <p class="text-sm text-text-muted">{l.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

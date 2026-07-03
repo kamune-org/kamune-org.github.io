@@ -40,9 +40,9 @@ const transports = [
         <table class="w-full text-sm">
           <thead>
             <tr class="border-b border-border">
-              <th class="text-right px-4 py-3 text-text-muted font-medium">{$t('relay.transportTable.transport')}</th>
-              <th class="text-right px-4 py-3 text-text-muted font-medium">{$t('relay.transportTable.dpi')}</th>
-              <th class="text-right px-4 py-3 text-text-muted font-medium">{$t('relay.transportTable.bestFor')}</th>
+              <th class="text-start px-4 py-3 text-text-muted font-medium">{$t('relay.transportTable.transport')}</th>
+              <th class="text-start px-4 py-3 text-text-muted font-medium">{$t('relay.transportTable.dpi')}</th>
+              <th class="text-start px-4 py-3 text-text-muted font-medium">{$t('relay.transportTable.bestFor')}</th>
             </tr>
           </thead>
           <tbody>
@@ -51,8 +51,8 @@ const transports = [
                 <td class="px-4 py-3 font-medium">{tr.name}</td>
                 <td class="px-4 py-3">
                   <span class={`badge text-[10px] ${
-                    tr.dpi === 'Excellent' ? 'bg-success-dim text-success border border-success/30' :
-                    tr.dpi === 'Weak' ? 'bg-warning-dim text-warning border border-warning/30' :
+                    tr.dpi === $t('relay.transportTable.wssDpi') || tr.dpi === $t('relay.transportTable.tlsDpi') ? 'bg-success-dim text-success border border-success/30' :
+                    tr.dpi === $t('relay.transportTable.wsDpi') ? 'bg-warning-dim text-warning border border-warning/30' :
                     'bg-bg-surface text-text-muted border border-border'
                   }`}>{tr.dpi}</span>
                 </td>

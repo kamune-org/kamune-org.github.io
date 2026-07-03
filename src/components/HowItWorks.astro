@@ -5,9 +5,9 @@ const { lang } = Astro.props;
 const $t = (key: string) => t(lang, key);
 
 const steps = [
-  { num: '01', title: $t('howItWorks.step1.title'), desc: $t('howItWorks.step1.desc'), color: 'border-accent' },
-  { num: '02', title: $t('howItWorks.step2.title'), desc: $t('howItWorks.step2.desc'), color: 'border-success' },
-  { num: '03', title: $t('howItWorks.step3.title'), desc: $t('howItWorks.step3.desc'), color: 'border-warning' },
+  { num: '01', title: $t('howItWorks.step1.title'), desc: $t('howItWorks.step1.desc'), color: 'border-warning' },
+  { num: '02', title: $t('howItWorks.step2.title'), desc: $t('howItWorks.step2.desc'), color: 'border-accent' },
+  { num: '03', title: $t('howItWorks.step3.title'), desc: $t('howItWorks.step3.desc'), color: 'border-success' },
 ];
 ---
 

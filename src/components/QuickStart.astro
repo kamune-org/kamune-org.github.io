@@ -7,7 +7,7 @@ const arrow = lang === 'fa' ? '←' : '→';
 
 const items = [
   { title: $t('quickStart.core'), desc: $t('quickStart.coreDesc'), code: 'go get github.com/kamune-org/kamune' },
-  { title: $t('quickStart.relay'), desc: $t('quickStart.relayDesc'), code: 'go install github.com/kamune-org/kamune/cmd/relay@latest && relay -config relay.toml' },
+  { title: $t('quickStart.relay'), desc: $t('quickStart.relayDesc'), code: 'go install github.com/kamune-org/kamune/cmd/relay@latest && relay -c relay.toml' },
   { title: $t('quickStart.bus'), desc: $t('quickStart.busDesc'), code: null, link: 'https://github.com/kamune-org/kamune/releases', linkLabel: $t('quickStart.download') },
   { title: $t('quickStart.tui'), desc: $t('quickStart.tuiDesc'), code: 'go install github.com/kamune-org/kamune/cmd/tui@latest' },
   { title: $t('quickStart.daemon'), desc: $t('quickStart.daemonDesc'), code: 'go install github.com/kamune-org/kamune/cmd/daemon@latest' },
@@ -18,13 +18,24 @@ const items = [
   <div class="max-w-6xl mx-auto">
     <h2 class="section-title">{$t('quickStart.title')}</h2>
     <p class="section-subtitle">{$t('quickStart.subtitle')}</p>
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="flex flex-wrap justify-center gap-6">
       {items.map((item) => (
-        <div class="card">
+        <div class="card w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]">
           <h3 class="font-semibold mb-1">{item.title}</h3>
           <p class="text-sm text-text-muted mb-4">{item.desc}</p>
           {item.code ? (
-            <div class="code-block text-xs">{item.code}</div>
+            <div class="relative group/code">
+              <div class="code-block text-xs pr-10">{item.code}</div>
+              <button
+                class="absolute top-2 right-2 text-text-muted hover:text-text-primary transition-colors opacity-0 group-hover/code:opacity-100"
+                data-copy
+                type="button"
+                aria-label="Copy"
+              >
+                <svg class="w-4 h-4 fill-none stroke-current stroke-2" data-copy-icon viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                <svg class="w-4 h-4 fill-none stroke-current stroke-2 hidden text-success" data-check-icon viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </button>
+            </div>
           ) : (
             <a
               href={item.link}
@@ -40,3 +51,22 @@ const items = [
     </div>
   </div>
 </section>
+
+<script>
+  document.querySelectorAll('[data-copy]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const code = btn.closest('.group\\/code')?.querySelector('.code-block')?.textContent?.trim();
+      if (code) {
+        navigator.clipboard.writeText(code);
+        const copyIcon = btn.querySelector('[data-copy-icon]') as SVGSVGElement;
+        const checkIcon = btn.querySelector('[data-check-icon]') as SVGSVGElement;
+        copyIcon?.classList.add('hidden');
+        checkIcon?.classList.remove('hidden');
+        setTimeout(() => {
+          copyIcon?.classList.remove('hidden');
+          checkIcon?.classList.add('hidden');
+        }, 2000);
+      }
+    });
+  });
+</script>

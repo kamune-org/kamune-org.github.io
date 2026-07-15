@@ -72,6 +72,37 @@ const { src = '/demo.mp4', poster = '/poster.jpg', alt = 'Kamune demo' } = Astro
   </div>
 </div>
 
+<style>
+  [data-player]:fullscreen,
+  [data-player].is-fullscreen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    border-radius: 0;
+    border: none;
+  }
+
+  [data-player]:fullscreen video,
+  [data-player].is-fullscreen video {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  [data-player]:fullscreen .absolute,
+  [data-player].is-fullscreen .absolute {
+    position: absolute;
+  }
+
+  [data-player]:fullscreen [data-controls],
+  [data-player].is-fullscreen [data-controls] {
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+</style>
+
 <script>
   document.querySelectorAll('[data-player]').forEach((root) => {
     const video = root.querySelector('[data-video]') as HTMLVideoElement;
@@ -142,6 +173,7 @@ const { src = '/demo.mp4', poster = '/poster.jpg', alt = 'Kamune demo' } = Astro
       const isFs = !!document.fullscreenElement;
       fsEnter.classList.toggle('hidden', isFs);
       fsExit.classList.toggle('hidden', !isFs);
+      root.classList.toggle('is-fullscreen', isFs);
     };
 
     fsBtn.addEventListener('click', () => {
@@ -152,7 +184,14 @@ const { src = '/demo.mp4', poster = '/poster.jpg', alt = 'Kamune demo' } = Astro
       }
     });
 
-    document.addEventListener('fullscreenchange', updateFsIcon);
+    document.addEventListener('fullscreenchange', () => {
+      updateFsIcon();
+      if (document.fullscreenElement) {
+        (screen.orientation as any)?.lock?.('landscape').catch(() => {});
+      } else {
+        (screen.orientation as any)?.unlock?.();
+      }
+    });
 
     root.addEventListener('mousemove', showControls);
     root.addEventListener('mouseleave', () => {

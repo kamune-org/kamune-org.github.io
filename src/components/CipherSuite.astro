@@ -5,34 +5,36 @@ const { lang } = Astro.props;
 const $t = (key: string) => t(lang, key);
 
 const layers = [
-  { label: $t('cipher.identity'), algo: $t('cipher.identityAlgo'), desc: $t('cipher.identityDesc'), color: 'text-accent' },
-  { label: $t('cipher.keyExchange'), algo: $t('cipher.keyExchangeAlgo'), desc: $t('cipher.keyExchangeDesc'), color: 'text-success' },
-  { label: $t('cipher.kdf'), algo: $t('cipher.kdfAlgo'), desc: $t('cipher.kdfDesc'), color: 'text-warning' },
-  { label: $t('cipher.encryption'), algo: $t('cipher.encryptionAlgo'), desc: $t('cipher.encryptionDesc'), color: 'text-info' },
+  { label: $t('cipher.identity'), algo: $t('cipher.identityAlgo'), desc: $t('cipher.identityDesc'), num: '01', color: 'text-accent' },
+  { label: $t('cipher.keyExchange'), algo: $t('cipher.keyExchangeAlgo'), desc: $t('cipher.keyExchangeDesc'), num: '02', color: 'text-success' },
+  { label: $t('cipher.kdf'), algo: $t('cipher.kdfAlgo'), desc: $t('cipher.kdfDesc'), num: '03', color: 'text-warning' },
+  { label: $t('cipher.encryption'), algo: $t('cipher.encryptionAlgo'), desc: $t('cipher.encryptionDesc'), num: '04', color: 'text-info' },
 ];
 ---
 
-<section class="py-20 px-4 bg-bg-surface">
+<section class="py-24 px-4 bg-bg-surface/50">
   <div class="max-w-6xl mx-auto">
-    <h2 class="section-title">{$t('cipher.title')}</h2>
-    <p class="section-subtitle">{$t('cipher.subtitle')}</p>
+    <h2 class="section-title" data-reveal="0">{$t('cipher.title')}</h2>
+    <p class="section-subtitle" data-reveal="1">{$t('cipher.subtitle')}</p>
 
     <div class="grid md:grid-cols-2 gap-12 items-center">
-      <div class="flex justify-center">
-        <img src="/diagrams/cipher-suite.svg" alt="Cipher suite architecture" class="max-w-full h-auto" loading="lazy" />
+      <div class="flex justify-center" data-reveal="2">
+        <img src="/diagrams/cipher-suite.svg" alt="Cipher suite architecture" class="max-w-full h-auto rounded-xl" loading="lazy" />
       </div>
 
-      <div class="space-y-4">
-        <div class="code-block text-center mb-6 text-accent font-semibold">
+      <div class="space-y-4" data-reveal="3">
+        <div class="code-block text-center mb-6 text-accent font-semibold border-accent/20">
           {$t('cipher.suiteName')}
         </div>
         {layers.map((l) => (
           <div class="card flex items-start gap-4">
-            <div class={`text-2xl font-mono font-bold ${l.color} mt-1`}>→</div>
+            <div class={`flex-shrink-0 w-10 h-10 rounded-xl bg-accent/10 ${l.color} flex items-center justify-center font-mono font-bold text-sm`}>
+              {l.num}
+            </div>
             <div>
               <div class="flex items-center gap-2 mb-1">
                 <span class="font-semibold">{l.label}</span>
-                <span class="text-xs font-mono text-text-muted bg-bg-surface px-2 py-0.5 rounded">{l.algo}</span>
+                <span class="text-xs font-mono text-text-muted bg-bg-surface px-2 py-0.5 rounded-md border border-border/60">{l.algo}</span>
               </div>
               <p class="text-sm text-text-muted">{l.desc}</p>
             </div>

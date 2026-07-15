@@ -5,27 +5,29 @@ const { lang } = Astro.props;
 const $t = (key: string) => t(lang, key);
 
 const steps = [
-  { num: '01', title: $t('howItWorks.step1.title'), desc: $t('howItWorks.step1.desc'), color: 'border-warning' },
-  { num: '02', title: $t('howItWorks.step2.title'), desc: $t('howItWorks.step2.desc'), color: 'border-accent' },
-  { num: '03', title: $t('howItWorks.step3.title'), desc: $t('howItWorks.step3.desc'), color: 'border-success' },
+  { num: '01', title: $t('howItWorks.step1.title'), desc: $t('howItWorks.step1.desc'), color: 'bg-warning' },
+  { num: '02', title: $t('howItWorks.step2.title'), desc: $t('howItWorks.step2.desc'), color: 'bg-accent' },
+  { num: '03', title: $t('howItWorks.step3.title'), desc: $t('howItWorks.step3.desc'), color: 'bg-success' },
 ];
 ---
 
-<section id="how-it-works" class="py-20 px-4">
+<section id="how-it-works" class="py-24 px-4">
   <div class="max-w-6xl mx-auto">
-    <h2 class="section-title">{$t('howItWorks.title')}</h2>
-    <p class="section-subtitle">{$t('howItWorks.subtitle')}</p>
+    <h2 class="section-title" data-reveal="0">{$t('howItWorks.title')}</h2>
+    <p class="section-subtitle" data-reveal="1">{$t('howItWorks.subtitle')}</p>
 
-    <div class="flex justify-center mb-12">
-      <img src="/diagrams/protocol-overview.svg" alt="Protocol flow" class="max-w-full h-auto" loading="lazy" />
+    <div class="flex justify-center mb-14" data-reveal="2">
+      <img src="/diagrams/protocol-overview.svg" alt="Protocol flow" class="max-w-full h-auto rounded-xl" loading="lazy" />
     </div>
 
-    <div class="grid md:grid-cols-3 gap-8">
-      {steps.map((s) => (
-        <div class={`card border-l-4 ${s.color}`}>
-          <span class="text-xs font-mono text-text-muted mb-2 block">{s.num}</span>
-          <h3 class="text-lg font-semibold mb-2">{s.title}</h3>
-          <p class="text-sm text-text-muted leading-relaxed">{s.desc}</p>
+    <div class="grid md:grid-cols-3 gap-8 relative">
+      {steps.map((s, i) => (
+        <div class="card group relative overflow-hidden" data-reveal={String(i + 1)}>
+          <span class="absolute -top-4 -right-2 text-8xl font-bold text-border/30 select-none pointer-events-none">{s.num}</span>
+          <div class={`w-2 h-2 rounded-full ${s.color} mb-4`}></div>
+          <span class="text-xs font-mono text-text-muted mb-2 block relative">{s.num}</span>
+          <h3 class="text-lg font-semibold mb-2 relative group-hover:text-accent transition-colors duration-200">{s.title}</h3>
+          <p class="text-sm text-text-muted leading-relaxed relative">{s.desc}</p>
         </div>
       ))}
     </div>

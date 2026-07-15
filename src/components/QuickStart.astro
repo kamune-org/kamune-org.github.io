@@ -7,27 +7,27 @@ const arrow = lang === 'fa' ? '←' : '→';
 
 const items = [
   { title: $t('quickStart.core'), desc: $t('quickStart.coreDesc'), code: 'go get github.com/kamune-org/kamune' },
-  { title: $t('quickStart.relay'), desc: $t('quickStart.relayDesc'), code: 'go install github.com/kamune-org/kamune/cmd/relay@latest && relay -c relay.toml' },
-  { title: $t('quickStart.bus'), desc: $t('quickStart.busDesc'), code: null, link: 'https://github.com/kamune-org/kamune/releases', linkLabel: $t('quickStart.download') },
-  { title: $t('quickStart.tui'), desc: $t('quickStart.tuiDesc'), code: 'go install github.com/kamune-org/kamune/cmd/tui@latest' },
-  { title: $t('quickStart.daemon'), desc: $t('quickStart.daemonDesc'), code: 'go install github.com/kamune-org/kamune/cmd/daemon@latest' },
+  { title: $t('quickStart.bus'), desc: $t('quickStart.busDesc'), link: 'https://github.com/kamune-org/kamune/releases', linkLabel: $t('quickStart.download') },
+  { title: $t('quickStart.relay'), desc: $t('quickStart.relayDesc'), code: 'docker run hossein1376/kamune-relay:latest', link: 'https://github.com/kamune-org/kamune/releases', linkLabel: $t('quickStart.download') },
+  { title: $t('quickStart.tui'), desc: $t('quickStart.tuiDesc'), code: 'go install -o kamune-tui github.com/kamune-org/kamune/cmd/tui@latest' },
+  { title: $t('quickStart.daemon'), desc: $t('quickStart.daemonDesc'), link: 'https://github.com/kamune-org/kamune/releases', linkLabel: $t('quickStart.download') },
 ];
 ---
 
-<section id="quick-start" class="py-20 px-4 bg-bg-surface">
+<section id="quick-start" class="py-24 px-4 bg-bg-surface/50">
   <div class="max-w-6xl mx-auto">
-    <h2 class="section-title">{$t('quickStart.title')}</h2>
-    <p class="section-subtitle">{$t('quickStart.subtitle')}</p>
-    <div class="flex flex-wrap justify-center gap-6">
-      {items.map((item) => (
-        <div class="card w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]">
+    <h2 class="section-title" data-reveal="0">{$t('quickStart.title')}</h2>
+    <p class="section-subtitle" data-reveal="1">{$t('quickStart.subtitle')}</p>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {items.map((item, i) => (
+        <div class="card" data-reveal={String((i % 3) + 1)}>
           <h3 class="font-semibold mb-1">{item.title}</h3>
           <p class="text-sm text-text-muted mb-4">{item.desc}</p>
-          {item.code ? (
+          {item.code && (
             <div class="relative group/code">
-              <div class="code-block text-xs pr-10">{item.code}</div>
+              <div class="code-block code-accent text-xs pr-10">{item.code}</div>
               <button
-                class="absolute top-2 right-2 text-text-muted hover:text-text-primary transition-colors opacity-0 group-hover/code:opacity-100"
+                class="absolute top-2.5 right-2.5 text-text-muted hover:text-text-primary transition-colors duration-150 opacity-60 group-hover/code:opacity-100"
                 data-copy
                 type="button"
                 aria-label="Copy"
@@ -36,14 +36,19 @@ const items = [
                 <svg class="w-4 h-4 fill-none stroke-current stroke-2 hidden text-success" data-check-icon viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               </button>
             </div>
-          ) : (
+          )}
+          {item.link && (
             <a
               href={item.link}
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-block text-sm font-medium text-accent hover:text-accent-hover transition-colors"
+              class:list={[
+                "inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:text-accent-hover transition-colors duration-150",
+                item.code && "mt-3",
+              ]}
             >
-              {item.linkLabel} {arrow}
+              {item.linkLabel}
+              <svg class="w-4 h-4 fill-none stroke-current stroke-2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
             </a>
           )}
         </div>

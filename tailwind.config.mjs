@@ -1,33 +1,46 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
         bg: {
-          DEFAULT: '#0a0a0f',
-          surface: '#141822',
-          card: '#161b28',
+          DEFAULT: 'rgb(var(--bg) / <alpha-value>)',
+          surface: 'rgb(var(--bg-surface) / <alpha-value>)',
+          card: 'rgb(var(--bg-card) / <alpha-value>)',
         },
         border: {
-          DEFAULT: '#1e2437',
-          light: '#2a3045',
+          DEFAULT: 'rgb(var(--border) / <alpha-value>)',
+          light: 'rgb(var(--border-light) / <alpha-value>)',
         },
         text: {
-          primary: '#e2e8f0',
-          secondary: '#94a3b8',
-          muted: '#5b677d',
-          timestamp: '#64748b',
+          primary: 'rgb(var(--text-primary) / <alpha-value>)',
+          secondary: 'rgb(var(--text-secondary) / <alpha-value>)',
+          muted: 'rgb(var(--text-muted) / <alpha-value>)',
+          timestamp: 'rgb(var(--text-timestamp) / <alpha-value>)',
         },
         accent: {
-          DEFAULT: '#6366f1',
-          hover: '#5558e6',
-          dim: 'rgba(99, 102, 241, 0.15)',
+          DEFAULT: 'rgb(var(--accent) / <alpha-value>)',
+          hover: 'rgb(var(--accent-hover) / <alpha-value>)',
+          dim: 'rgb(var(--accent-dim) / <alpha-value>)',
         },
-        success: { DEFAULT: '#10b981', dim: 'rgba(16, 185, 129, 0.15)' },
-        warning: { DEFAULT: '#f59e0b', dim: 'rgba(245, 158, 11, 0.15)' },
-        danger: { DEFAULT: '#ef4444', dim: 'rgba(239, 68, 68, 0.15)' },
-        info: { DEFAULT: '#3b82f6', dim: 'rgba(59, 130, 246, 0.15)' },
+        success: {
+          DEFAULT: 'rgb(var(--success) / <alpha-value>)',
+          dim: 'rgb(var(--success-dim) / <alpha-value>)',
+        },
+        warning: {
+          DEFAULT: 'rgb(var(--warning) / <alpha-value>)',
+          dim: 'rgb(var(--warning-dim) / <alpha-value>)',
+        },
+        danger: {
+          DEFAULT: 'rgb(var(--danger) / <alpha-value>)',
+          dim: 'rgb(var(--danger-dim) / <alpha-value>)',
+        },
+        info: {
+          DEFAULT: 'rgb(var(--info) / <alpha-value>)',
+          dim: 'rgb(var(--info-dim) / <alpha-value>)',
+        },
       },
       fontFamily: {
         sans: ['Inter', 'Vazirmatn', 'system-ui', 'sans-serif'],
@@ -37,9 +50,16 @@ export default {
       borderRadius: {
         DEFAULT: '8px',
       },
+      boxShadow: {
+        'card': '0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04)',
+        'card-hover': '0 4px 12px 0 rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06)',
+        'glow': '0 0 20px -4px rgb(var(--accent) / 0.25)',
+        'glow-lg': '0 0 40px -8px rgb(var(--accent) / 0.3)',
+      },
       animation: {
         'fade-in': 'fadeIn 0.6s ease-out',
         'slide-up': 'slideUp 0.6s ease-out',
+        'slide-down': 'slideDown 0.3s ease-out',
       },
       keyframes: {
         fadeIn: {
@@ -47,7 +67,11 @@ export default {
           '100%': { opacity: '1' },
         },
         slideUp: {
-          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '0%': { opacity: '0', transform: 'translateY(24px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideDown: {
+          '0%': { opacity: '0', transform: 'translateY(-8px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
       },

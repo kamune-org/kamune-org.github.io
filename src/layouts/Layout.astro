@@ -30,6 +30,16 @@ const { title, lang, dir = 'ltr', description = 'Post-quantum, end-to-end encryp
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <script is:inline>
+      // Theme init — runs before paint to prevent flash
+      (function() {
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const dark = stored ? stored === 'dark' : prefersDark;
+        document.documentElement.classList.toggle('dark', dark);
+        document.documentElement.setAttribute('data-theme-loaded', '');
+      })();
+    </script>
   </head>
   <body class="min-h-screen flex flex-col">
     <Nav lang={lang} />
@@ -37,5 +47,23 @@ const { title, lang, dir = 'ltr', description = 'Post-quantum, end-to-end encryp
       <slot />
     </main>
     <Footer lang={lang} />
+
+    <script is:inline>
+      // Scroll reveal observer
+      (function() {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+        );
+        document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+      })();
+    </script>
   </body>
 </html>

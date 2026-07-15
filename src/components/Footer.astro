@@ -5,17 +5,17 @@ const { lang } = Astro.props;
 const $t = (key: string) => t(lang, key);
 ---
 
-<footer class="border-t border-border py-8 mt-20">
-  <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-muted">
-    <div class="flex items-center gap-2">
-      <img src="/logo.png" alt="Kamune" class="h-5 w-5" />
-      <span>{$t('footer.builtWith')} <span class="text-accent">♥</span> {$t('footer.by')}</span>
+<footer class="border-t border-border/60 py-14 mt-20">
+  <div class="max-w-6xl mx-auto px-4 flex flex-col items-center gap-6">
+    <div class="flex items-center gap-2.5">
+      <img src="/logo.png" alt="Kamune" class="h-5 w-5 rounded" />
+      <span class="text-sm text-text-muted">{$t('footer.builtWith')} <span class="text-accent">♥</span> {$t('footer.by')}</span>
     </div>
-    <div class="flex items-center gap-4">
-      <a href="https://github.com/kamune-org/kamune/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="hover:text-text-primary transition-colors">
+    <div class="flex items-center gap-5 text-sm text-text-muted">
+      <a href="https://github.com/kamune-org/kamune/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="hover:text-text-primary transition-colors duration-150">
         {$t('footer.license')}
       </a>
-      <a href="https://github.com/kamune-org/kamune" target="_blank" rel="noopener noreferrer" class="hover:text-text-primary transition-colors">
+      <a href="https://github.com/kamune-org/kamune" target="_blank" rel="noopener noreferrer" class="hover:text-text-primary transition-colors duration-150">
         GitHub
       </a>
     </div>

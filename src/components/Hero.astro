@@ -7,19 +7,22 @@ const $t = (key: string) => t(lang, key);
 const base = lang === 'en' ? '/' : '/fa';
 ---
 
-<section class="pt-32 pb-16 px-4">
-  <div class="max-w-4xl mx-auto text-center">
-    <span class="badge-accent mb-6 inline-block">{$t('hero.version')}</span>
-    <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6 animate-fade-in">
+<section class="relative pt-36 pb-16 px-4">
+  <div class="hero-glow"></div>
+  <div class="relative max-w-4xl mx-auto text-center">
+    <div data-reveal="0">
+      <span class="badge-accent mb-8 inline-block">{$t('hero.version')}</span>
+    </div>
+    <h1 class="text-5xl md:text-7xl font-bold tracking-tight leading-[1.1] mb-6 gradient-text" data-reveal="1">
       {$t('hero.title')}
     </h1>
-    <p class="text-lg md:text-xl text-text-muted max-w-3xl mx-auto mb-8 animate-slide-up">
+    <p class="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto mb-10 leading-relaxed" data-reveal="2">
       {$t('hero.subtitle')}
     </p>
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14" data-reveal="3">
       <a
         href="#quick-start"
-        class="px-6 py-3 rounded-lg bg-accent text-white font-semibold hover:bg-accent-hover transition-colors"
+        class="px-7 py-3.5 rounded-xl bg-accent text-white font-semibold glow transition-all duration-200 hover:bg-accent-hover hover:shadow-lg hover:-translate-y-0.5"
       >
         {$t('hero.getStarted')}
       </a>
@@ -27,12 +30,12 @@ const base = lang === 'en' ? '/' : '/fa';
         href="https://github.com/kamune-org/kamune"
         target="_blank"
         rel="noopener noreferrer"
-        class="px-6 py-3 rounded-lg border border-border text-text-secondary font-semibold hover:border-accent/30 hover:text-text-primary transition-colors"
+        class="px-7 py-3.5 rounded-xl border border-border/80 text-text-secondary font-semibold backdrop-blur-sm hover:text-text-primary hover:border-accent/25 hover:bg-accent/5 transition-all duration-200"
       >
         {$t('hero.viewGithub')}
       </a>
     </div>
-    <div class="animate-fade-in">
+    <div data-reveal="4">
       <VideoPlayer src="/demo.mp4" alt="Kamune demo" />
     </div>
   </div>

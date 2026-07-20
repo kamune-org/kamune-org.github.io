@@ -2,7 +2,14 @@
 const { src = '/demo.mp4', poster = '/poster.jpg', alt = 'Kamune demo' } = Astro.props;
 ---
 
-<div class="relative group rounded-2xl border border-border/60 overflow-hidden bg-bg-surface shadow-card" data-player dir="ltr">
+<div
+  class="relative group rounded-2xl border border-border/60 overflow-hidden bg-bg-surface shadow-card outline-none"
+  data-player
+  dir="ltr"
+  role="region"
+  aria-label="Video player"
+  tabindex="0"
+>
   <video
     {src}
     {poster}
@@ -14,6 +21,14 @@ const { src = '/demo.mp4', poster = '/poster.jpg', alt = 'Kamune demo' } = Astro
     aria-label={alt}
     data-video
   />
+
+  <!-- Buffering spinner -->
+  <div
+    class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none hidden"
+    data-buffering
+  >
+    <div class="w-10 h-10 border-[3px] border-white/30 border-t-white rounded-full animate-spin" />
+  </div>
 
   <!-- Centered play button -->
   <button
@@ -27,27 +42,38 @@ const { src = '/demo.mp4', poster = '/poster.jpg', alt = 'Kamune demo' } = Astro
     </span>
   </button>
 
+  <!-- Speed indicator -->
+  <div
+    class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-150 z-10"
+    data-speed-indicator
+  >
+    <span class="bg-black/30 backdrop-blur-sm text-white/80 text-lg font-semibold px-4 py-2 rounded-xl">2x</span>
+  </div>
+
   <!-- Bottom controls -->
   <div
-    class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pt-10 pb-4 px-4 transition-opacity duration-300 z-20"
+    class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pt-3 pb-2 px-4 transition-opacity duration-300 z-20 cursor-pointer"
     data-controls
   >
-    <!-- Progress bar -->
+    <!-- Progress bar (44px touch target, thin visual track) -->
     <div
-      class="w-full h-1.5 bg-white/20 rounded-full mb-3 cursor-pointer group/progress"
+      class="w-full h-11 flex items-center cursor-pointer group/progress"
       data-progress-bar
       role="slider"
       aria-label="Seek"
       aria-valuemin="0"
       aria-valuemax="100"
       aria-valuenow="0"
+      style="touch-action: none;"
     >
-      <div
-        class="h-full rounded-full relative transition-[width] duration-100"
-        style="background: linear-gradient(90deg, rgb(99 102 241), #8b5cf6);"
-        data-progress-fill
-      >
-        <span class="absolute right-0 top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-white rounded-full opacity-0 group-hover/progress:opacity-100 transition-opacity shadow-md" />
+      <div class="w-full h-1.5 bg-white/20 rounded-full relative overflow-visible">
+        <div
+          class="h-full rounded-full relative transition-[width] duration-0"
+          style="background: linear-gradient(90deg, rgb(99 102 241), #8b5cf6);"
+          data-progress-fill
+        >
+          <span class="absolute right-0 top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-white rounded-full opacity-0 group-hover/progress:opacity-100 group-active/progress:opacity-100 transition-opacity shadow-md" data-thumb />
+        </div>
       </div>
     </div>
 
@@ -101,6 +127,10 @@ const { src = '/demo.mp4', poster = '/poster.jpg', alt = 'Kamune demo' } = Astro
     right: 0;
     bottom: 0;
   }
+
+  [data-player].dragging [data-thumb] {
+    opacity: 1;
+  }
 </style>
 
 <script>
@@ -108,6 +138,8 @@ const { src = '/demo.mp4', poster = '/poster.jpg', alt = 'Kamune demo' } = Astro
     const video = root.querySelector('[data-video]') as HTMLVideoElement;
     const centerPlay = root.querySelector('[data-center-play]') as HTMLElement;
     const controls = root.querySelector('[data-controls]') as HTMLElement;
+    const buffering = root.querySelector('[data-buffering]') as HTMLElement;
+    const speedIndicator = root.querySelector('[data-speed-indicator]') as HTMLElement;
     const playBtn = root.querySelector('[data-play-btn]') as HTMLButtonElement;
     const playIcon = root.querySelector('[data-play-icon]') as SVGSVGElement;
     const pauseIcon = root.querySelector('[data-pause-icon]') as SVGSVGElement;
@@ -119,6 +151,10 @@ const { src = '/demo.mp4', poster = '/poster.jpg', alt = 'Kamune demo' } = Astro
     const fsExit = root.querySelector('[data-fs-exit]') as SVGSVGElement;
 
     let hideTimer: ReturnType<typeof setTimeout>;
+    let seeking = false;
+    let holdTimer: ReturnType<typeof setTimeout> | null = null;
+    let fastForwarding = false;
+    let heldRightHalf = false;
 
     const fmt = (s: number) => {
       const m = Math.floor(s / 60);
@@ -136,18 +172,78 @@ const { src = '/demo.mp4', poster = '/poster.jpg', alt = 'Kamune demo' } = Astro
     };
 
     const togglePlay = () => {
-      video.paused ? video.play() : video.pause();
+      video.paused ? video.play().catch(() => {}) : video.pause();
     };
+
+    // Clicking the gradient background (not children) toggles play/pause
+    controls.addEventListener('click', (e) => {
+      if (e.target === controls) togglePlay();
+    });
 
     const showControls = () => {
       controls.style.opacity = '1';
+      controls.style.pointerEvents = '';
       clearTimeout(hideTimer);
       hideTimer = setTimeout(() => {
-        if (!video.paused) controls.style.opacity = '0';
+        if (!video.paused) {
+          controls.style.opacity = '0';
+          controls.style.pointerEvents = 'none';
+        }
       }, 3000);
     };
 
-    video.addEventListener('click', togglePlay);
+    const seekToClientX = (clientX: number) => {
+      const rect = progressBar.getBoundingClientRect();
+      const pct = Math.min(Math.max((clientX - rect.left) / rect.width, 0), 1);
+      video.currentTime = pct * video.duration;
+    };
+
+    // Hold-to-fast-forward on right half of video
+    const stopFastForward = () => {
+      if (fastForwarding) {
+        video.playbackRate = 1;
+        speedIndicator.style.opacity = '0';
+        fastForwarding = false;
+      }
+      if (holdTimer) {
+        clearTimeout(holdTimer);
+        holdTimer = null;
+      }
+    };
+
+    video.addEventListener('pointerdown', (e) => {
+      const rect = video.getBoundingClientRect();
+      const isRightHalf = e.clientX > rect.left + rect.width / 2;
+      heldRightHalf = isRightHalf;
+
+      if (!isRightHalf || video.paused) return;
+
+      holdTimer = setTimeout(() => {
+        holdTimer = null;
+        fastForwarding = true;
+        video.playbackRate = 2;
+        speedIndicator.style.opacity = '1';
+      }, 300);
+    });
+
+    video.addEventListener('pointerup', () => {
+      if (fastForwarding) {
+        stopFastForward();
+        return;
+      }
+      if (heldRightHalf && holdTimer) {
+        clearTimeout(holdTimer);
+        holdTimer = null;
+      }
+      togglePlay();
+    });
+
+    video.addEventListener('pointercancel', stopFastForward);
+    video.addEventListener('pointerleave', () => {
+      stopFastForward();
+      heldRightHalf = false;
+    });
+
     centerPlay.addEventListener('click', (e) => { e.stopPropagation(); togglePlay(); });
     playBtn.addEventListener('click', togglePlay);
 
@@ -164,9 +260,56 @@ const { src = '/demo.mp4', poster = '/poster.jpg', alt = 'Kamune demo' } = Astro
       progressBar.setAttribute('aria-valuenow', String(Math.round(pct)));
     });
 
-    progressBar.addEventListener('click', (e) => {
-      const rect = progressBar.getBoundingClientRect();
-      video.currentTime = ((e.clientX - rect.left) / rect.width) * video.duration;
+    // Drag-to-seek via pointer events
+    progressBar.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      seeking = true;
+      root.classList.add('dragging');
+      progressBar.setPointerCapture(e.pointerId);
+      seekToClientX(e.clientX);
+    });
+
+    progressBar.addEventListener('pointermove', (e) => {
+      if (!seeking) return;
+      seekToClientX(e.clientX);
+    });
+
+    const stopSeek = () => {
+      seeking = false;
+      root.classList.remove('dragging');
+    };
+
+    progressBar.addEventListener('pointerup', stopSeek);
+    progressBar.addEventListener('pointercancel', stopSeek);
+    progressBar.addEventListener('lostpointercapture', stopSeek);
+
+    // Keyboard controls
+    root.addEventListener('keydown', (e) => {
+      const ev = e as KeyboardEvent;
+      if (ev.key === ' ' || ev.key === 'k') {
+        ev.preventDefault();
+        togglePlay();
+        showControls();
+      } else if (ev.key === 'ArrowLeft') {
+        ev.preventDefault();
+        video.currentTime = Math.max(video.currentTime - 5, 0);
+        showControls();
+      } else if (ev.key === 'ArrowRight') {
+        ev.preventDefault();
+        video.currentTime = Math.min(video.currentTime + 5, video.duration || 0);
+        showControls();
+      }
+    });
+
+    // Buffering indicator
+    video.addEventListener('waiting', () => {
+      buffering.classList.remove('hidden');
+    });
+    video.addEventListener('playing', () => {
+      buffering.classList.add('hidden');
+    });
+    video.addEventListener('canplay', () => {
+      buffering.classList.add('hidden');
     });
 
     const updateFsIcon = () => {
@@ -196,9 +339,13 @@ const { src = '/demo.mp4', poster = '/poster.jpg', alt = 'Kamune demo' } = Astro
     root.addEventListener('mousemove', showControls);
     root.addEventListener('mouseleave', () => {
       clearTimeout(hideTimer);
-      if (!video.paused) controls.style.opacity = '0';
+      if (!video.paused) {
+        controls.style.opacity = '0';
+        controls.style.pointerEvents = 'none';
+      }
     });
 
     controls.style.opacity = '0';
+    controls.style.pointerEvents = 'none';
   });
 </script>

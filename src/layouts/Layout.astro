@@ -48,6 +48,17 @@ const { title, lang, dir = 'ltr', description = 'Post-quantum, end-to-end encryp
     </main>
     <Footer lang={lang} />
 
+    <button
+      id="scroll-top"
+      class="fixed bottom-6 end-6 z-50 flex items-center justify-center w-10 h-10 rounded-xl bg-bg/80 backdrop-blur-xl border border-border/60 text-text-muted hover:text-text-primary hover:border-accent/20 transition-all duration-200 opacity-0 pointer-events-none"
+      aria-label="Back to top"
+      type="button"
+    >
+      <svg class="w-5 h-5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M18 15l-6-6-6 6" />
+      </svg>
+    </button>
+
     <script is:inline>
       // Scroll reveal observer
       (function() {
@@ -63,6 +74,19 @@ const { title, lang, dir = 'ltr', description = 'Post-quantum, end-to-end encryp
           { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
         );
         document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+      })();
+
+      // Scroll to top button
+      (function() {
+        const btn = document.getElementById('scroll-top');
+        if (!btn) return;
+        window.addEventListener('scroll', () => {
+          const show = window.scrollY > 400;
+          btn.classList.toggle('opacity-0', !show);
+          btn.classList.toggle('pointer-events-none', !show);
+          btn.classList.toggle('opacity-100', show);
+        }, { passive: true });
+        btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
       })();
     </script>
   </body>

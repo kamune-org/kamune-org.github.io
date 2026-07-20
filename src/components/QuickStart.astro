@@ -7,14 +7,12 @@ const arrow = lang === 'fa' ? '←' : '→';
 
 const items = [
   { title: $t('quickStart.core'), desc: $t('quickStart.coreDesc'), code: 'go get github.com/kamune-org/kamune' },
-  { title: $t('quickStart.bus'), desc: $t('quickStart.busDesc'), link: 'https://github.com/kamune-org/kamune/releases', linkLabel: $t('quickStart.download') },
   { title: $t('quickStart.relay'), desc: $t('quickStart.relayDesc'), code: 'docker run hossein1376/kamune-relay:latest', link: 'https://github.com/kamune-org/kamune/releases', linkLabel: $t('quickStart.download') },
-  { title: $t('quickStart.tui'), desc: $t('quickStart.tuiDesc'), code: 'go install -o kamune-tui github.com/kamune-org/kamune/cmd/tui@latest' },
   { title: $t('quickStart.daemon'), desc: $t('quickStart.daemonDesc'), link: 'https://github.com/kamune-org/kamune/releases', linkLabel: $t('quickStart.download') },
 ];
 ---
 
-<section id="quick-start" class="py-24 px-4 bg-bg-surface/50">
+<section id="quick-start" class="py-24 px-4">
   <div class="max-w-6xl mx-auto">
     <h2 class="section-title" data-reveal="0">{$t('quickStart.title')}</h2>
     <p class="section-subtitle" data-reveal="1">{$t('quickStart.subtitle')}</p>

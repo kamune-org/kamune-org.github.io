@@ -12,7 +12,7 @@ const layers = [
 ];
 ---
 
-<section class="py-24 px-4 bg-bg-surface/50">
+<section class="py-24 px-4">
   <div class="max-w-6xl mx-auto">
     <h2 class="section-title" data-reveal="0">{$t('cipher.title')}</h2>
     <p class="section-subtitle" data-reveal="1">{$t('cipher.subtitle')}</p>
@@ -34,9 +34,9 @@ const layers = [
             <div>
               <div class="flex items-center gap-2 mb-1">
                 <span class="font-semibold">{l.label}</span>
-                <span class="text-xs font-mono text-text-muted bg-bg-surface px-2 py-0.5 rounded-md border border-border/60">{l.algo}</span>
+                <span class="text-xs font-mono text-text-secondary bg-bg-surface px-2 py-0.5 rounded-md border border-border/60">{l.algo}</span>
               </div>
-              <p class="text-sm text-text-muted">{l.desc}</p>
+              <p class="text-sm text-text-secondary">{l.desc}</p>
             </div>
           </div>
         ))}

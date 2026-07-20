@@ -20,7 +20,7 @@ const transports = [
 ];
 ---
 
-<section class="py-24 px-4">
+<section class="py-24 px-4 bg-bg-surface/50">
   <div class="max-w-6xl mx-auto">
     <h2 class="section-title" data-reveal="0">{$t('relay.title')}</h2>
     <p class="section-subtitle" data-reveal="1">{$t('relay.subtitle')}</p>
@@ -29,7 +29,7 @@ const transports = [
       {properties.map((p, i) => (
         <div class="card text-center" data-reveal={String((i % 3) + 1)}>
           <h3 class="font-semibold mb-2 text-accent">{p.title}</h3>
-          <p class="text-sm text-text-muted leading-relaxed">{p.desc}</p>
+          <p class="text-sm text-text-secondary leading-relaxed">{p.desc}</p>
         </div>
       ))}
     </div>
@@ -40,9 +40,9 @@ const transports = [
         <table class="w-full text-sm">
           <thead>
             <tr class="border-b border-border/60">
-              <th class="text-start px-5 py-3.5 text-text-muted font-medium">{$t('relay.transportTable.transport')}</th>
-              <th class="text-start px-5 py-3.5 text-text-muted font-medium">{$t('relay.transportTable.dpi')}</th>
-              <th class="text-start px-5 py-3.5 text-text-muted font-medium">{$t('relay.transportTable.bestFor')}</th>
+              <th class="text-start px-5 py-3.5 text-text-secondary font-medium">{$t('relay.transportTable.transport')}</th>
+              <th class="text-start px-5 py-3.5 text-text-secondary font-medium">{$t('relay.transportTable.dpi')}</th>
+              <th class="text-start px-5 py-3.5 text-text-secondary font-medium">{$t('relay.transportTable.bestFor')}</th>
             </tr>
           </thead>
           <tbody>
@@ -53,10 +53,10 @@ const transports = [
                   <span class={`badge text-[10px] ${
                     tr.dpi === $t('relay.transportTable.wssDpi') || tr.dpi === $t('relay.transportTable.tlsDpi') ? 'bg-success/10 text-success border border-success/20' :
                     tr.dpi === $t('relay.transportTable.wsDpi') ? 'bg-warning/10 text-warning border border-warning/20' :
-                    'bg-bg-surface text-text-muted border border-border/60'
+                    'bg-bg-surface text-text-secondary border border-border/60'
                   }`}>{tr.dpi}</span>
                 </td>
-                <td class="px-5 py-3.5 text-text-muted">{tr.best}</td>
+                <td class="px-5 py-3.5 text-text-secondary">{tr.best}</td>
               </tr>
             ))}
           </tbody>

@@ -1,0 +1,33 @@
+---
+import { readFileSync } from 'node:fs';
+
+interface Props {
+  file: string;
+  label: string;
+}
+
+const allowed = new Set([
+  'protocol-overview.svg',
+  'cipher-suite.svg',
+]);
+
+const { file, label } = Astro.props;
+if (!allowed.has(file)) {
+  throw new Error(`unknown diagram: ${file}`);
+}
+
+const raw = readFileSync(
+  new URL(`../../public/diagrams/${file}`, import.meta.url),
+  'utf8',
+);
+const esc = label
+  .replaceAll('&', '&amp;')
+  .replaceAll('<', '&lt;')
+  .replaceAll('"', '&quot;');
+const svg = raw.replace(
+  '<svg ',
+  `<svg role="img" aria-label="${esc}" `,
+);
+---
+
+<Fragment set:html={svg} />

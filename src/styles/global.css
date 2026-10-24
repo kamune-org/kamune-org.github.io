@@ -186,3 +186,78 @@ html[dir="rtl"] .gradient-text {
   -webkit-background-clip: text;
   background-clip: text;
 }
+
+/* Protocol diagrams. Overrides beat the SVG default. */
+html .kamune-diagram {
+  color-scheme: light;
+  width: 100%;
+  height: auto;
+  --km-canvas-0-override: #f6f8fa;
+  --km-canvas-1-override: #ffffff;
+  --km-card-override: #ffffff;
+  --km-band-override: #eef2f6;
+  --km-inset-override: #f6f8fa;
+  --km-border-override: #d0d7de;
+  --km-shadow-override: #1f2328;
+  --km-title-override: #1f2328;
+  --km-body-override: #59636e;
+  --km-muted-override: #656d76;
+  --km-faint-override: #6e7781;
+  --km-dim-override: #818b98;
+  --km-info-override: #0969da;
+  --km-orange-override: #bc4c00;
+  --km-orange-2-override: #9a3e00;
+  --km-blue-override: #0969da;
+  --km-blue-2-override: #0550ae;
+  --km-purple-override: #8250df;
+  --km-purple-2-override: #6639ba;
+  --km-purple-3-override: #8250df;
+  --km-green-override: #1a7f37;
+  --km-green-2-override: #116329;
+  --km-green-3-override: #1a7f37;
+  --km-yellow-override: #9a6700;
+  --km-yellow-2-override: #7d4e00;
+  --km-yellow-3-override: #9a6700;
+  --km-red-override: #d1242f;
+  --km-red-2-override: #a40e26;
+  --km-pink-override: #bf3989;
+  --km-pink-2-override: #99286e;
+  --km-teal-override: #0e7c86;
+  --km-teal-2-override: #115e67;
+}
+
+html.dark .kamune-diagram {
+  color-scheme: dark;
+  --km-canvas-0-override: #0d1117;
+  --km-canvas-1-override: #161b22;
+  --km-card-override: #0d1117;
+  --km-band-override: #161b22;
+  --km-inset-override: #21262d;
+  --km-border-override: #30363d;
+  --km-shadow-override: #000;
+  --km-title-override: #e6edf3;
+  --km-body-override: #c9d1d9;
+  --km-muted-override: #8b949e;
+  --km-faint-override: #6e7681;
+  --km-dim-override: #484f58;
+  --km-info-override: #79c0ff;
+  --km-orange-override: #f0883e;
+  --km-orange-2-override: #da6d25;
+  --km-blue-override: #58a6ff;
+  --km-blue-2-override: #1f6feb;
+  --km-purple-override: #d2a8ff;
+  --km-purple-2-override: #8b5cf6;
+  --km-purple-3-override: #a371f7;
+  --km-green-override: #7ee787;
+  --km-green-2-override: #238636;
+  --km-green-3-override: #3fb950;
+  --km-yellow-override: #e3b341;
+  --km-yellow-2-override: #9e6a03;
+  --km-yellow-3-override: #d29922;
+  --km-red-override: #f85149;
+  --km-red-2-override: #da3633;
+  --km-pink-override: #f778ba;
+  --km-pink-2-override: #db61a2;
+  --km-teal-override: #56d4dd;
+  --km-teal-2-override: #1b7c83;
+}

@@ -1,5 +1,6 @@
 ---
 import { t } from '../lib/i18n';
+import Diagram from './Diagram.astro';
 
 const { lang } = Astro.props;
 const $t = (key: string) => t(lang, key);
@@ -18,8 +19,8 @@ const layers = [
     <p class="section-subtitle" data-reveal="1">{$t('cipher.subtitle')}</p>
 
     <div class="grid md:grid-cols-2 gap-12 items-center">
-      <div class="flex justify-center" data-reveal="2">
-        <img src="/diagrams/cipher-suite.svg" alt={$t('cipher.diagramAlt')} class="max-w-full h-auto rounded-xl" loading="lazy" />
+      <div class="flex justify-center w-full min-w-0" data-reveal="2">
+        <Diagram file="cipher-suite.svg" label={$t('cipher.diagramAlt')} />
       </div>
 
       <div class="space-y-4" data-reveal="3">

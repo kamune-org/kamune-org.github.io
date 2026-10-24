@@ -8,6 +8,7 @@ const steps = [
   { num: '01', title: $t('howItWorks.step1.title'), desc: $t('howItWorks.step1.desc'), color: 'bg-warning' },
   { num: '02', title: $t('howItWorks.step2.title'), desc: $t('howItWorks.step2.desc'), color: 'bg-accent' },
   { num: '03', title: $t('howItWorks.step3.title'), desc: $t('howItWorks.step3.desc'), color: 'bg-success' },
+  { num: '04', title: $t('howItWorks.step4.title'), desc: $t('howItWorks.step4.desc'), color: 'bg-info' },
 ];
 ---
 
@@ -17,10 +18,10 @@ const steps = [
     <p class="section-subtitle" data-reveal="1">{$t('howItWorks.subtitle')}</p>
 
     <div class="flex justify-center mb-14" data-reveal="2">
-      <img src="/diagrams/protocol-overview.svg" alt="Protocol flow" class="max-w-full h-auto rounded-xl" loading="lazy" />
+      <img src="/diagrams/protocol-overview.svg" alt={$t('howItWorks.diagramAlt')} class="max-w-full h-auto rounded-xl" loading="lazy" />
     </div>
 
-    <div class="grid md:grid-cols-3 gap-8 relative">
+    <div class="grid md:grid-cols-2 gap-8 relative">
       {steps.map((s, i) => (
         <div class="card group relative overflow-hidden" data-reveal={String(i + 1)}>
           <span class="absolute -top-4 -right-2 text-8xl font-bold text-border/30 select-none pointer-events-none">{s.num}</span>
